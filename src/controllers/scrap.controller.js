@@ -1,16 +1,49 @@
+// import { extractFromHtml } from '@extractus/article-extractor'
 import dotenv from 'dotenv'
 import puppeteer from 'puppeteer'
+// import chro from 'chrome-aws-lambda'
+// import puppeteerCore from 'puppeteer-core'
 dotenv.config()
 
+// let chrome = {}
+// let puppeteer
+
+// if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+//   chrome = chro
+//   puppeteer = puppeteerCore
+// } else {
+//   puppeteer = pup
+// }
+
 export const getScrap = async (req, res, next) => {
+  // let options = {}
+
+  // if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+  //   options = {
+  //     args: [...chrome.args, '--hide-scrollbars', '--disable-web-security'],
+  //     defaultViewport: chrome.defaultViewport,
+  //     executablePath: await chrome.executablePath,
+  //     headless: true,
+  //     ignoreHTTPSErrors: true
+  //   }
+  // }
+
   try {
     const { character } = req.params
     const urlCharacter = `https://armory.warmane.com/character/${character}/Icecrown/summary`
 
     // Lanza el navegador
     const browser = await puppeteer.launch({
-      args: ['--disable-setuid-sandbox', '--no-sandbox'],
-      headless: true
+      args: [
+        '--disable-setuid-sandbox',
+        '--no-sandbox',
+        '--single-process',
+        '--no-zygote'
+      ],
+      executablePath:
+        process.env.NODE_ENV === 'production'
+          ? process.env.PUPPETEER_EXECUTABLE_PATH
+          : puppeteer.executablePath()
     })
     const page = await browser.newPage()
 
