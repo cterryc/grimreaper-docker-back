@@ -1,6 +1,6 @@
 // import { extractFromHtml } from '@extractus/article-extractor'
 import dotenv from 'dotenv'
-import puppeteer from 'puppeteer'
+import puppeteer from 'puppeteer-core'
 // import chro from 'chrome-aws-lambda'
 // import puppeteerCore from 'puppeteer-core'
 dotenv.config()
